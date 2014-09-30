@@ -1,0 +1,8 @@
+---
+- hosts: my-servers
+  user: human
+  connection: ssh
+  roles:
+    - { role: ansible-tlsdate,
+        sudo: yes
+      }

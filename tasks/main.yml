@@ -1,0 +1,17 @@
+---
+
+- name: ensure backports apt repo is setup
+  apt_repository: >
+    repo="deb {{ backports_url }} {{ backports_distribution_release }} main"
+    state=present 
+    update_cache=yes
+  sudo: yes
+
+- name: ensure tlsdate from backports is installed
+  apt:
+    name=tlsdate
+    state=latest
+    install_recommends=no
+    force=yes
+    default_release="{{ backports_distribution_release }}"
+
