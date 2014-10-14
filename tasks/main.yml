@@ -1,5 +1,16 @@
 ---
 
+- name: purge ntp packages
+  apt:
+    name="{{ item }}"
+    force=yes
+    purge=yes
+    state=absent
+  with_items:
+    - ntp
+    - ntpdate
+  when: remove_ntp
+
 - name: ensure backports apt repo is setup
   apt_repository: >
     repo="deb {{ backports_url }} {{ backports_distribution_release }} main"
@@ -15,3 +26,5 @@
     force=yes
     default_release="{{ backports_distribution_release }}"
 
+- name: ensure tlsdate is running
+  service: name=tlsdate state=running

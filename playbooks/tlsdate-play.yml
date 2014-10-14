@@ -4,5 +4,6 @@
   connection: ssh
   roles:
     - { role: ansible-tlsdate,
+        remove_ntp: yes,
         sudo: yes
       }

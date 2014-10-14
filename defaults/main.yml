@@ -1,2 +1,3 @@
 backports_url: "http://ftp.de.debian.org/debian/"
 backports_distribution_release: "wheezy-backports"
+remove_ntp: no
