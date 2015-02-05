@@ -1,0 +1,7 @@
+---
+
+- name: restart tlsdated
+  service: name=tlsdated state=restarted
+
+- name: reload apparmor profile
+  command: apparmor_parser -r /etc/apparmor.d/usr.bin.tlsdate

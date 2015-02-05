@@ -1,0 +1,32 @@
+---
+- name: purge ntp packages
+  apt:
+    name="{{ item }}"
+    force=yes
+    purge=yes
+    state=absent
+  with_items:
+    - ntp
+    - ntpdate
+  when: remove_ntp
+
+- name: ensure tlsdate is installed
+  apt:
+    name=tlsdate
+    state=latest
+    update_cache=yes
+    cache_valid_time={{ apt_cache_ttl | default(86400) }} # a day
+  notify:
+    - restart tlsdated
+
+# https://github.com/ioerror/tlsdate/pull/170
+- name: apparmor profile needs update
+  copy:
+    src=apparmor-profile
+    dest=/etc/apparmor.d/usr.bin.tlsdate
+  notify:
+    - reload apparmor profile
+    - restart tlsdated
+
+- name: ensure tlsdate daemon is running and enabled
+  service: name=tlsdated state=running enabled=yes
