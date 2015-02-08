@@ -27,4 +27,4 @@
     default_release="{{ backports_distribution_release }}"
 
 - name: ensure tlsdate is running
-  service: name=tlsdate state=running
+  service: name=tlsdated state=running
