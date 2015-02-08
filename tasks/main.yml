@@ -20,11 +20,11 @@
 
 - name: ensure tlsdate from backports is installed
   apt:
-    name=tlsdated
+    name=tlsdate
     state=latest
     install_recommends=no
     force=yes
     default_release="{{ backports_distribution_release }}"
 
 - name: ensure tlsdate is running
-  service: name=tlsdate state=running
+  service: name=tlsdated state=running
