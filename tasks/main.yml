@@ -20,7 +20,7 @@
 
 - name: ensure tlsdate from backports is installed
   apt:
-    name=tlsdate
+    name=tlsdated
     state=latest
     install_recommends=no
     force=yes
