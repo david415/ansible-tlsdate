@@ -28,3 +28,8 @@
 
 - name: ensure tlsdate is running
   service: name=tlsdate state=running
+  when: ansible_distribution == "Ubuntu"
+
+- name: ensure tlsdated is running
+  service: name=tlsdated state=running
+  when: ansible_distribution == "Debian"
