@@ -1,3 +1,4 @@
 backports_url: "http://http.debian.net/debian/"
 backports_distribution_release: "wheezy-backports"
 remove_ntp: no
+tlsdate_service_wanted_state: 'running'
