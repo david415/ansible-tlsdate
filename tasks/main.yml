@@ -14,9 +14,16 @@
 - name: ensure backports apt repo is setup
   apt_repository: >
     repo="deb {{ backports_url }} {{ backports_distribution_release }} main"
-    state=present 
+    state=present
     update_cache=yes
   sudo: yes
+  register: tlsdate_install_from_backports
+  when: (
+          backports_distribution_release is defined and backports_distribution_release and
+          ansible_distribution == 'Debian' and ansible_distribution_release in [
+              'wheezy',
+            ]
+        )
 
 - name: ensure tlsdate from backports is installed
   apt:
@@ -25,6 +32,28 @@
     install_recommends=no
     force=yes
     default_release="{{ backports_distribution_release }}"
+  when: not tlsdate_install_from_backports|skipped
+
+- name: ensure tlsdate is installed
+  apt:
+    name=tlsdate
+    state=latest
+    install_recommends=no
+  when: tlsdate_install_from_backports|skipped
 
 - name: ensure tlsdate is running
-  service: name=tlsdate state=running
+  service:
+    name=tlsdate
+    state={{ tlsdate_service_wanted_state }}
+  register: tlsdate_service_name
+  when: (
+          ansible_distribution == 'Debian' and ansible_distribution_release in [
+              'wheezy',
+            ]
+        )
+
+- name: ensure tlsdate is running
+  service:
+    name=tlsdated
+    state={{ tlsdate_service_wanted_state }}
+  when: tlsdate_service_name|skipped
